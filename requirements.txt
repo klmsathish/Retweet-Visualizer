@@ -3,4 +3,3 @@ tweepy
 pandas
 json-lines
 python-igraph
-louvain
