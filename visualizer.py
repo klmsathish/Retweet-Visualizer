@@ -89,48 +89,6 @@ projectdir = outputdir + project
 
 st.write("---")
 
-st.header("Timeline of tweets")
-
-#st.write("Plot the amount of tweets over time.")
-if st.button("Plot tweet count over time"):
-
-    # legacy dataset conversion
-    if filename[-1] == "n":
-        with st.spinner("You are trying to load a legacy dataset. Converting \
-                        dataset to jsonl and saving..."):
-            json_to_jsonl(filename)
-        filename += "l"
-    
-    with st.spinner("Reading file..."):
-        tweetdf = tweetjson_to_df(filename)
-        grouped_df = groupby_dates(tweetdf)
-        
-        ot_count = int(sum(grouped_df["original tweets"]))
-        rt_count = int(sum(grouped_df["retweets"]))
-        tt_count = ot_count+rt_count
-        
-        if rt_count < ot_count:
-            plots = plot(grouped_df, ["original tweets", "retweets"])
-        else:
-            plots = plot(grouped_df, ["retweets", "original tweets"])
-
-        st.altair_chart(plots, use_container_width=True)
-        
-        firstdate_str = str(list(tweetdf.iloc[[-1]]["time"])[0])[:16]
-        lastdate_str = str(list(tweetdf.iloc[[0]]["time"])[0])[:16]
-
-        st.write(f"The dataset contains {tt_count} tweets, from which {ot_count} are\
-                   original tweets and {rt_count} are retweets.")
-        st.write(f"The first tweet is from {firstdate_str}, the last tweet is from \
-        {lastdate_str} (UTC).")
-
-        if not os.path.exists(projectdir):
-            os.makedirs(projectdir)
-
-        plots.save(f"{projectdir}/{project}_timeline.html")
-
-st.write("---")
-
 # -------------------------------------------------------------------
 
 st.header("Interactive networks")
