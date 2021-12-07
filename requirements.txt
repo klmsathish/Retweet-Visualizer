@@ -4,4 +4,3 @@ pandas
 json-lines
 python-igraph
 leidenalg
-louvain
