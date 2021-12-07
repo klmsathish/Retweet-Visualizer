@@ -19,9 +19,9 @@ from datetime import datetime
 import datetime as dt
 import os
 import zipfile
-
+import streamlit.components.v1 as components
 # ------- UI --------- #
-
+st.set_page_config(layout='wide')
 # st.markdown('<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;\
 #             700&display=swap" rel="stylesheet"> ',
 #             unsafe_allow_html=True)
@@ -256,6 +256,11 @@ if st.button("Generate Retweet Network"):
         data=file,
         file_name="RetweetNetwork.zip"
       )
+    savename = "output/2021-11-30_personal/2021-11-30_personal_RTN"
+    filepath = f"{savename}.html"
+    HtmlFile = open(filepath, 'r', encoding='utf-8')
+    source_code = HtmlFile.read() 
+    components.html(source_code,width = 1300,height =1000)
 
 # ------------------------------------------------------------------
 st.write("---")
@@ -306,6 +311,7 @@ if st.button("Generate Hashtag Network"):
                            link_threshold=link_thresh_htn,
                            starttime=daterange[0],
                            endtime=daterange[1])
+        
     if htn_louvain:
         with st.spinner("Computing communities..."):
             H, Hcg = compute_louvain(H)
@@ -367,3 +373,4 @@ if st.button("Generate Hashtag Network"):
         data=file,
         file_name="HashtagNetwork.zip"
       )
+
