@@ -256,7 +256,7 @@ if st.button("Generate Retweet Network"):
         data=file,
         file_name="RetweetNetwork.zip"
       )
-    savename = "output/2021-11-30_personal/2021-11-30_personal_RTN"
+    print(savename)
     filepath = f"{savename}.html"
     HtmlFile = open(filepath, 'r', encoding='utf-8')
     source_code = HtmlFile.read() 
