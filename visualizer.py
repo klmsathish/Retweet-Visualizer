@@ -121,35 +121,9 @@ rtn_giantcomponent = st.checkbox("Giant component", key='rtn_giantcomponent')
 privacy = st.checkbox(
     "Remove metadata of nodes that are not public figures \
      (less than 5000 followers)")
-st.write('<span style="text-decoration: underline;">Aggregation method</span>', 
-         unsafe_allow_html=True)
 
-rtn_aggregation_soft = st.checkbox(
-    "Soft aggregate (remove nodes with in-degree 0 and only one neighbor)",
-    key='rtn_aggregation_soft')
-rtn_aggregation_hard = st.checkbox(
-    "Hard aggregate (remove nodes with in-degree ≤ threshold)",
-    key='rtn_aggregation_hard')
-threshold = 0
-if rtn_aggregation_hard:
-    thresh_rtn = st.slider("threshold", 0.0, 20.0, 1.0, 1.0, key='thresh_rtn')
-    threshold += thresh_rtn
-if rtn_aggregation_soft:
-    aggregationmethod = 'soft'
-elif rtn_aggregation_hard:
-    aggregationmethod = 'hard'
-else:
-    aggregationmethod = None
 
 rtn_comdeclist = []
-st.write('<span style="text-decoration: underline;">Community detection</span>', 
-         unsafe_allow_html=True)
-rtn_louvain = st.checkbox("Louvain", key='rtn_louvain')
-if rtn_louvain:
-    rtn_comdeclist.append("louvain")
-rtn_infomap = st.checkbox("Infomap", key='rtn_infomap')
-if rtn_infomap:
-    rtn_comdeclist.append("infomap")
 
 if st.button("Generate Retweet Network"):
     if not os.path.exists(projectdir):
@@ -161,16 +135,10 @@ if st.button("Generate Retweet Network"):
                         dataset to jsonl and saving..."):
             json_to_jsonl(filename)
         filename += "l"
-    
-    # return error when trying to choose both aggregations
-    if rtn_aggregation_soft is True and rtn_aggregation_hard is True:
-        st.error("Please choose only one of the aggregations")
 
     with st.spinner("Creating retweet network..."):
         G = retweetnetwork(filename=filename,
                            giant_component=rtn_giantcomponent,
-                           aggregation=aggregationmethod,
-                           t=threshold,
                            starttime=daterange[0],
                            endtime=daterange[1])
         if privacy:
@@ -291,7 +259,7 @@ if st.button("Generate Hashtag Network"):
             "You are trying to load a legacy dataset. \
             Converting dataset to jsonl and saving...")
         json_to_jsonl(filename)
-        filename += "l"
+        filename += "l" 
     # load the tweets
     with st.spinner("Loading tweets..."):
         with open(filename, "rb") as f:
