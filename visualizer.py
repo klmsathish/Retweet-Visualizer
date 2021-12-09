@@ -20,8 +20,19 @@ import datetime as dt
 import os
 import zipfile
 import streamlit.components.v1 as components
+
 # ------- UI --------- #
 st.set_page_config(layout='wide')
+
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
 # st.markdown('<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;\
 #             700&display=swap" rel="stylesheet"> ',
 #             unsafe_allow_html=True)
@@ -62,7 +73,7 @@ def file_selector(folder_path='.'):
         filenames.remove('.DS_Store')
     filenames = list(reversed(filenames))
     selected_filename = st.selectbox(
-        'Select a tweet collection inside ./data', filenames)
+        'Select a tweet collection', filenames)
     return os.path.join(folder_path, selected_filename)
 
 filename = file_selector('./data')
@@ -76,11 +87,11 @@ else:
 collectedon = filename[7:17]
 subtitle = subtitlevalue
 project = st.text_input(label="Set a foldername for the project that will be \
-    created in ./output",
+    created in output",
                         value=f"{collectedon}_{subtitle}")
 
-st.write(f'`You selected {filename}.`<br>`\
-    The file size is about {filesize}MB.`', unsafe_allow_html=True)
+# st.write(f'`You selected {filename}.`<br>`\
+#     The file size is about {filesize}MB.`', unsafe_allow_html=True)
 
 datadir = "./data/"
 outputdir = "./output/"
